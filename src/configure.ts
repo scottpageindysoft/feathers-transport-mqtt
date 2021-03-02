@@ -5,7 +5,7 @@ import { setup as setupClient } from './client';
 import { debug } from './debug';
 import { defaultOptions } from './default-options';
 
-export const configure = <T = any>(app: FeathersTransportMqttApplication<T>, options?: Partial<ConfigureOptions>) => {
+export async function configure<T = any>(app: FeathersTransportMqttApplication<T>, options?: Partial<ConfigureOptions>) {
   const localOptions = defaultOptions;
 
   if (options) {
@@ -34,6 +34,7 @@ export const configure = <T = any>(app: FeathersTransportMqttApplication<T>, opt
               this.client = await setupClient(localOptions, baseRequestChannel);
             }
             resolve(this.client);
+            return (setup as any).call(this, server, ...rest); // TODO: Make sure we're passing the correct params, correct number of params, and update the FeathersTransportMqttApplication definition to match
             break;
           default:
             throw new Error(`Invalid mode option "${localOptions.mode}"`);

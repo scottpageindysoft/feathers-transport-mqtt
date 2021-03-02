@@ -1,4 +1,6 @@
 
+// From https://github.com/feathersjs/feathers/blob/dove/packages/socketio/src/index.ts
+
 import Debug from 'debug';
 import SocketIO, { Server, ServerOptions } from 'socket.io';
 import http from 'http';

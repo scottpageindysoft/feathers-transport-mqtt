@@ -1,6 +1,7 @@
 import aedes from "aedes";
 import asyncMqtt from 'async-mqtt';
 import { Application, Params, Service } from '@feathersjs/feathers';
+import { Socket } from "net";
 
 export interface FeathersTransportMqttApplicationExtensions<T> {
   broker?: aedes.Aedes;
@@ -20,6 +21,10 @@ export interface ConfigureOptions {
   reconnectPeriod: number;
   protocol?: 'wss' | 'ws' | 'mqtt' | 'mqtts' | 'tcp' | 'ssl' | 'wx' | 'wxs'; // From async-mqtt source
 }
+
+export type ParamsGetter = (socket: Socket) => any;
+
+export type NextFunction = (err?: any) => void;
 
 export interface FeathersSocket extends aedes.Client {
   feathers?: Params

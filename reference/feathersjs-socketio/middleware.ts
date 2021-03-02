@@ -1,3 +1,4 @@
+// From https://github.com/feathersjs/feathers/blob/dove/packages/socketio/src/middleware.ts
 
 import { Application, Params } from '@feathersjs/feathers';
 import Debug from 'debug';
