@@ -24,7 +24,7 @@ export async function configure<T = any>(app: FeathersTransportMqttApplication<T
     Object.assign(app, {
       async listen(this: FeathersTransportMqttApplication<T>, ...args: any[]) {
       },
-      async setup(this: FeathersTransportMqttApplication<T>, server: http.Server, ...rest: any[]) {
+      async setup(this: FeathersTransportMqttApplication<T>, server: http.Server) {
         debug('setup started');
         switch (localOptions.mode) {
           case 'broker':
@@ -34,7 +34,7 @@ export async function configure<T = any>(app: FeathersTransportMqttApplication<T
               this.client = await setupClient(localOptions, baseRequestChannel);
             }
             resolve(this.client);
-            return (setup as any).call(this, server, ...rest); // TODO: Make sure we're passing the correct params, correct number of params, and update the FeathersTransportMqttApplication definition to match
+            return setup.call(this, server); // TODO: Make sure we're passing the correct params, correct number of params, and update the FeathersTransportMqttApplication definition to match
             break;
           default:
             throw new Error(`Invalid mode option "${localOptions.mode}"`);

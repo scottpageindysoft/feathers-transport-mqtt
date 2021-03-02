@@ -1,5 +1,5 @@
 
-// From https://github.com/feathersjs/feathers/blob/dove/packages/socketio/src/index.ts
+// From https://github.com/feathersjs/feathers/blob/dove/packages/socketio/src/index.ts (dove branch)
 
 import Debug from 'debug';
 import SocketIO, { Server, ServerOptions } from 'socket.io';
