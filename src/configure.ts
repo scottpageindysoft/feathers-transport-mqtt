@@ -17,25 +17,32 @@ export async function configure<T = any>(app: FeathersTransportMqttApplication<T
     if (options.protocol) localOptions.protocol = options.protocol;
   }
 
-  return new Promise<asyncMqtt.AsyncClient>((resolve) => {
+  return new Promise<void>((resolve) => {
     const { listen, setup } = app;
     const baseRequestChannel = `${localOptions.baseTopic}/request/#`;
     const baseResponseChannel = `${localOptions.baseTopic}/response/`;
     Object.assign(app, {
-      async listen(this: FeathersTransportMqttApplication<T>, ...args: any[]) {
+      listen(this: FeathersTransportMqttApplication<T>, ...args: any[]) {
+        console.info('Listen function called');
+        if (typeof listen === 'function') {
+          return (listen as any).call(this, ...args);
+        }
+        const server = http.createServer();
+        this.setup(server);
+        return server.listen(...args);
       },
-      async setup(this: FeathersTransportMqttApplication<T>, server: http.Server) {
+      setup(this: FeathersTransportMqttApplication<T>, server: http.Server) {
+        console.info('Setup function called');
         debug('setup started');
         switch (localOptions.mode) {
           case 'broker':
             break;
           case 'client':
             if (!this.client) {
-              this.client = await setupClient(localOptions, baseRequestChannel);
+              void setupClient(localOptions, baseRequestChannel);
             }
-            resolve(this.client);
+            resolve();
             return setup.call(this, server); // TODO: Make sure we're passing the correct params, correct number of params, and update the FeathersTransportMqttApplication definition to match
-            break;
           default:
             throw new Error(`Invalid mode option "${localOptions.mode}"`);
         }

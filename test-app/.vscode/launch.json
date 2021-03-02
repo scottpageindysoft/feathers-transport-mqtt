@@ -13,7 +13,11 @@
       ],
       "program": "${workspaceFolder}/lib",
       "sourceMaps": true,
-      "preLaunchTask": "tsc: build - tsconfig.json"
+      "preLaunchTask": "tsc: build - tsconfig.json",
+      "env": {
+        "NODE_ENV": "development",
+        "DEBUG": "*"
+      }
     }
   ]
 }
